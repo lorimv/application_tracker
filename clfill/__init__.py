@@ -1,8 +1,19 @@
+import os
+import json
 
-from .clfill import *
+def initialize_creds():
+    credentials_path = os.environ.get('DOCS_PATH')
 
-__all__ = []
+    if credentials_path == None:
+        raise ValueError("Environmental var DOCS_PATH is not set.")
+    
+    with open(credentials_path, 'r') as credentials_file:
+        credentials_json = json.load(credentials_file)
 
-if __name__ == '__main__':
-    from .cli import main
-    main()
+    return credentials_json
+
+try: 
+    credentials_json = initialize_creds()
+except ValueError as e:
+    credentials_json = None
+    print(e)
