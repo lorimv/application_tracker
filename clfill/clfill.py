@@ -19,7 +19,7 @@ def query():
     position_s = input()
 
 def method():
-    creds = service_account.Credentials.from_service_account_file('creds.json', scopes=['https://www.googleapis.com/auth/documents'])
+    creds = service_account.Credentials.from_service_account_file('credentials.json', scopes=['https://www.googleapis.com/auth/documents'])
 
     service = build("docs", "v1", credentials=creds)
 

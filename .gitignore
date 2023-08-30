@@ -15,3 +15,6 @@ build/
 
 # Ignore vscode
 .vscode/
+
+# Ignore .JSON credentials
+credentials.json
