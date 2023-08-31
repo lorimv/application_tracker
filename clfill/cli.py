@@ -1,5 +1,5 @@
+import argparse
 from clfill_tempname import query
-from credhandler import get_creds, credentials
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Exploit generator for CVE-2023-38831')
