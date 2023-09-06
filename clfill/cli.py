@@ -1,7 +1,8 @@
 import argparse
-from clfill_tempname import method
+from filler import method
 
-def parse_args() -> argparse.Namespace:
+##TODO TODO TODO TODO this function is default
+def parse_args() -> argparse.Namespace: 
     parser = argparse.ArgumentParser(description='cover letter filler')
     parser.add_argument('bait', help='Path to the bait file to to add to the archive.')
     parser.add_argument('switch', help='Path to the payload to switcheroo with the bait file on double click.')
@@ -18,16 +19,16 @@ def query():
     print("Hola hola")
 
     print("Let's start by getting the name of the company: ")
-    company_l = input()
+    company_long = input()
 
     print("yeah aight now the shortened company name: ")
-    company_s = input()
+    company_short = input()
 
     print("Position name (full)?")
-    position_l = input()
+    position_long = input()
 
     print("Now tha shortened position name")
-    position_s = input()
+    position_short = input()
     
 
 def main():
