@@ -16,6 +16,7 @@ def parse_args() -> argparse.Namespace:
     return  parser.parse_args()
 
 def query():
+    # Demo function, asks user info needed to fill doc
     print("Hola hola")
 
     print("Let's start by getting the name of the company: ")
