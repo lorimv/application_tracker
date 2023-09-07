@@ -11,7 +11,7 @@ def get_path():
 
 # uses path environment variable to locate credentials file, then returns Credentials obj
 def authenticate():
-    # store path from environment variable
+    # store path from environment variable (TODO maybe repace with arg like in old version)
     credentials_path = os.environ.get('CLFILL_KEY_PATH')
     # create Flow instance using specified path
     flow = InstalledAppFlow.from_client_secrets_file(credentials_path, SCOPES)
