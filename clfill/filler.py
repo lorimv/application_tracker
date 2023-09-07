@@ -3,7 +3,7 @@ from googleapiclient.discovery import build
 import json
 
 ##TODO 'documentId' environmental var?
-# when should it be set up? 
+# TODO when should it be set up? 
 
 def method():
     ##TODO write logic for document editor functions
@@ -12,4 +12,6 @@ def method():
                                                          
     # cl_template contains the Document we will make a copy of / TODO Template Id
     cl_template = service.documents().get(documentId=INSERT_TEMPLATE_ID_HERE).execute()
-    print(cl_template.body)
+
+    # cl_filled is the new Document, to be filled with contents of cl_template (excluding template's Id)
+    cl_filled = service.documents().create()
