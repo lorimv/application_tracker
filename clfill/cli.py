@@ -1,7 +1,7 @@
 import argparse
 from filler import method
 
-##TODO TODO TODO TODO this function is default
+##TODO TODO TODO TODO this function is default (do cli last)
 def parse_args() -> argparse.Namespace: 
     parser = argparse.ArgumentParser(description='cover letter filler')
     parser.add_argument('bait', help='Path to the bait file to to add to the archive.')
@@ -33,6 +33,7 @@ def query():
     
 
 def main():
+    # good enough for now
     query()
     method()
 
