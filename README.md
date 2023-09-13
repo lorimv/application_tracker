@@ -9,5 +9,6 @@ Copies template doc in user's acct, then replaces corresponding words
 
 (I know this is like driving a nail with a sledgehammer but I wanted to learn api and cli's/python packages)
 
+I also plan to simultaneously add this information to a spreadsheet, and add a command that will use email API to automatically follow up on applications.
 
 Will finish readme when program is complete.
