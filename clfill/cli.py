@@ -1,8 +1,8 @@
 import argparse
 from filler import method
 
-##TODO TODO TODO TODO this function is default (do cli last)
-def parse_args() -> argparse.Namespace: 
+# TODO TODO TODO TODO this function is default (do cli last)
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='cover letter filler')
     parser.add_argument('bait', help='Stand-in arg.')
     parser.add_argument('switch', help='Stand-in arg.')
@@ -35,7 +35,8 @@ def query():
 def main():
     # good enough for now
     query()
-    method() # maybe arguments into filler (docs)  & tracker (sheets), mailer will use info from spreadsheet when -m
+    method()  # maybe arguments into filler (docs)  & tracker (sheets), mailer will use info from spreadsheet when -m
+
 
 if __name__ == '__main__':
     main()

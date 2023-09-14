@@ -1,15 +1,15 @@
-from . import credentials
 from googleapiclient.discovery import build
-import json
+from . import credentials
+# import json (maybe unnecessary?)
 
-##TODO 'documentId' environmental var?
+# TODO 'documentId' environmental var?
 # TODO when should it be set up? 
 
 def method():
-    ##TODO write logic for document editor functions
+    # TODO write logic for document editor functions
 
     service = build("docs", "v1", credentials=credentials)
-                                                         
+
     # cl_template contains the Document we will make a copy of / TODO Template Id
     cl_template = service.documents().get(documentId=INSERT_TEMPLATE_ID_HERE).execute()
 
