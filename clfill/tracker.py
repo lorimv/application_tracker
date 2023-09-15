@@ -10,13 +10,13 @@ def update_tracker():
     # TODO write logic for document editor functions
 
     service = build('sheets', 'v4', credentials=credentials)
-    if ():  # the place where we store tracker's docId is empty...
+    if ():  # ...there is no trackerId in ini file...
         tracker = service.sheets().create()
-        # store tracker's id
-    
+        # create tracker, add id to ini
+ 
 
 def get_email_info():
-    # returns the email, company name, job position from any non-followed up applications    
+    # returns the email, company name, job position from any non-followed up applications
     if ():  # TODO the place where we store tracker's docId is empty...
         return []
 
@@ -26,8 +26,8 @@ def get_email_info():
     # check if an app is ready to be followed up (app date >= today's date) ->
     # output job title, company name, email address
     email_info = []
-    
-    for (n) in (e):  # TODO edit logic here to add each valid row to email_info array
+
+    for n in (n):  # TODO edit logic here to add each valid row to email_info array
         service = build('sheets', 'v4', credentials=credentials)
         result = service.spreadsheets().values().batchGet(
             spreadsheetId=OURSHEETID, ranges=INSERTRANGEHERE).execute()

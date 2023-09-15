@@ -1,7 +1,12 @@
-"""__init__ module"""
-from os import system
+"""__init__ module, ensures proper setup of config.ini / credentials"""
+import configparser
 import sys
+from .config_handler import config_exists, create_config
 from .auth import authenticate, get_path
+
+# Begin by ensuring config file exists...
+if not config_exists():
+    create_config()  # ...& creating one with default values if it dne
 
 try:
     # calls auth's get_path() function on startup...
