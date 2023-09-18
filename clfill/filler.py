@@ -3,7 +3,7 @@ from . import credentials
 # import json (maybe unnecessary?)
 
 # TODO 'documentId' environmental var?
-# TODO when should it be set up? 
+# TODO when should it be set up?
 
 def method():
     # TODO write logic for document editor functions
