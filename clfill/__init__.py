@@ -1,5 +1,6 @@
-"""__init__ module, ensures proper setup of config.ini / credentials"""
-import configparser
+"""__init__ module, ensures proper setup of config.ini / credentials
+"""
+
 import sys
 from .config_handler import config_exists, create_config
 from .auth import authenticate, get_path
@@ -20,12 +21,10 @@ except ValueError as e:
 
 # once we know environment var exists...
 # TODO maybe we should add the path to config.ini, for consistency?
-# TODO then we could add path to the ini file?
 try:
-    # ...we call auth's authenticate() and set 'credentials' to the output...
-    credentials = authenticate()
+    credentials = authenticate()  # I think this is a bad idea, but idk where else to store credentials.
+                                  # (Singleton maybe? but im not coding Credentials so idk if thats possible)
 except Exception as e:  # TODO specify exception
-    # ...which will exit if we cannot authenticate
     print(e)
     print('authentication failed!!!')
     sys.exit()

@@ -5,13 +5,13 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 from . import credentials
-from .tracker import get_email_info
+from .tracker import get_email_info  # unnecessary? i think tracker should convert data from sheets to readable stuff
 from .config_handler import get_value
 
 # this is the module that will auto-send follow up emails when -m is called
 # im thinking it will take arguments from tracker module that returns company name & email & job title
 
-def send_mail(company_name, position_name, company_email):  # TODO is it smarter to pass raw sheet data as arg?
+def send_mail(company_name, position_name, company_email, app_date):
     MY_NAME = get_value('Mailer', 'myName')
     MY_EMAIL = get_value('Mailer', 'myEmail')
 
@@ -23,7 +23,7 @@ def send_mail(company_name, position_name, company_email):  # TODO is it smarter
         message.set_content('Hello ' + company_name + ',\n\n'
 
                             'My name is ' + MY_NAME + '. I am writing to follow up on my application for the ' +
-                            position_name + ' role at ' + company_name + ' on [date].\n\n'
+                            position_name + ' role at ' + company_name + ' on ' + app_date + '.\n\n'
                             'I remain excited about the possibility of joining your team and '
                             'contributing to its success. I believe my [specific job-related skills]'
                             ' make me a strong candidate for the position, and I would love to discuss '
@@ -32,8 +32,8 @@ def send_mail(company_name, position_name, company_email):  # TODO is it smarter
                             'Please let me know of any questions I can answer or additional information '
                             'I can provide. Thank you for your consideration. I look forward to speaking soon!\n\n'
 
-                            'Warm regards,\n'
-                            'Lorenzo Vega')  # should probably ask the user for their own name at some point
+                            'Warm regards,\n' +
+                            MY_NAME)
 
         message['To'] = company_email
         message['From'] = MY_EMAIL
@@ -52,4 +52,5 @@ def send_mail(company_name, position_name, company_email):  # TODO is it smarter
     except HttpError as e:
         print(e)
         draft = None
+
     return draft
