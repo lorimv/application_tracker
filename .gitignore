@@ -16,5 +16,5 @@ build/
 # Ignore vscode
 .vscode/
 
-# Ignore .JSON credentials
-credentials.json
+# Ignore .ini file (contains personal info)
+*.ini

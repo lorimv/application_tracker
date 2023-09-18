@@ -19,6 +19,8 @@ except ValueError as e:
     sys.exit()
 
 # once we know environment var exists...
+# TODO maybe we should add the path to config.ini, for consistency?
+# TODO then we could add path to the ini file?
 try:
     # ...we call auth's authenticate() and set 'credentials' to the output...
     credentials = authenticate()
