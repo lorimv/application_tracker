@@ -6,21 +6,32 @@ from googleapiclient.errors import HttpError
 
 from . import credentials
 from .tracker import get_email_info  # unnecessary? i think tracker should convert data from sheets to readable stuff
-from .config_handler import get_value
+from .config_handler import get_config_value
 
 # this is the module that will auto-send follow up emails when -m is called
 # im thinking it will take arguments from tracker module that returns company name & email & job title
 
 def send_mail(company_name, position_name, company_email, app_date):
-    MY_NAME = get_value('Mailer', 'myName')
-    MY_EMAIL = get_value('Mailer', 'myEmail')
+    """Sends follow-up email, based on function parameters
+
+    Args:
+        company_name (str): name of company
+        position_name (str): name of position
+        company_email (str): company's email address
+        app_date (str): date application was originally sent
+
+    Returns:
+        ???: draft of email ig? need to read documentation again
+    """
+    MY_NAME = get_config_value('Mailer', 'myName')
+    MY_EMAIL = get_config_value('Mailer', 'myEmail')
 
     try:
         # The following code block is the writer/sender for follow-up emails
         service = build('gmail', 'v1', credentials=credentials)
 
-        message = EmailMessage()
-        message.set_content('Hello ' + company_name + ',\n\n'
+        message = EmailMessage()  # maybe this could be stored in a file, more accessible for user to edit
+        message.set_content('Hello ' + company_name + ',\n\n'  # (and would take up less space)
 
                             'My name is ' + MY_NAME + '. I am writing to follow up on my application for the ' +
                             position_name + ' role at ' + company_name + ' on ' + app_date + '.\n\n'

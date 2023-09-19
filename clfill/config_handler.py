@@ -36,7 +36,7 @@ def create_config():
         config.write(configfile)
 
 
-def get_value(section, key):
+def get_config_value(section, key):
     """Gets value associated with given section/key of config.ini file
 
     Args:
