@@ -22,6 +22,7 @@ def send_mail(company_name, position_name, company_email, app_date):
 
     Returns:
         ???: draft of email ig? need to read documentation again
+
     """
     MY_NAME = get_config_value('Mailer', 'myName')
     MY_EMAIL = get_config_value('Mailer', 'myEmail')
