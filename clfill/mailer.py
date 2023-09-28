@@ -11,6 +11,7 @@ from .config_handler import get_config_value
 # this is the module that will auto-send follow up emails when -m is called
 # im thinking it will take arguments from tracker module that returns company name & email & job title
 
+
 def send_mail(company_name, position_name, company_email, app_date):
     """Sends follow-up email, based on function parameters
 

@@ -62,3 +62,18 @@ def get_config_value(section, key):
         value = config[section][key]
 
     return value
+
+def set_config_value(section, key, value):
+    """Sets value for the selected element of config.ini
+
+    Args:
+        section (str): section of .ini file we're looking in
+        key (str): key associated with the value we want to set
+        value (str): the value we would like to set key to
+    """
+    config = configparser.ConfigParser()
+
+    config[section][key] = value
+
+    with open('config/config.ini', 'w', encoding='utf8') as configfile:
+        config.write(configfile)

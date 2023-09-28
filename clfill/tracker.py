@@ -1,6 +1,7 @@
 from googleapiclient.discovery import build
 from . import credentials
 from .mailer import send_mail
+from .config_handler import get_config_value, set_config_value
 # import json
 
 # I think the function will CREATE a spreadsheet if not created...
@@ -9,15 +10,14 @@ from .mailer import send_mail
 def update_tracker():
     # TODO write logic for document editor functions
 
-    service = build('sheets', 'v4', credentials=credentials)
-    if ():  # ...there is no trackerId in ini file...
-        tracker = service.sheets().create()
-        # create tracker, add id to ini
- 
+    service = build('drive', 'v3', credentials=credentials)
+    if (get_config_value('Tracker', 'trackerId') == ''):  # ...there is no trackerId in ini file...
+        tracker = service.drive().create()  # create tracker, add id to ini TODO we now are using drive api vs sheets, update syntax
+        set_config_value('Tracker', 'trackerId', tracker.TRACKERS_ID_HERE_TODO)
 
 def get_email_info():
     # returns the email, company name, job position from any non-followed up applications
-    if ():  # TODO the place where we store tracker's docId is empty...
+    if (get_config_value('Tracker', 'trackerId') == ''):  # TODO the place where we store tracker's docId is empty...
         return []
 
     # up here we will configure 'range' vars to include columns for company, position, and emails
@@ -28,7 +28,7 @@ def get_email_info():
     email_info = []
 
     for n in (n):  # TODO edit logic here to add each valid row to email_info array
-        service = build('sheets', 'v4', credentials=credentials)
+        service = build('drive', 'v3', credentials=credentials)
         result = service.spreadsheets().values().batchGet(
             spreadsheetId=OURSHEETID, ranges=INSERTRANGEHERE).execute()
         email_info.append(result)
