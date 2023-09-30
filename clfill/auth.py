@@ -38,5 +38,5 @@ def authenticate(credentials_path):
     credentials = flow.run_local_server(port=0)
     return credentials
 
-# TODO maybe add pickling support, logic to check for pickled creds before
+# TODO maybe add ini support, logic to check for ini creds before
 # getting path to json credentials user secret & creating flow

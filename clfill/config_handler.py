@@ -51,17 +51,18 @@ def get_config_value(section, key):
         create_config()
 
     config = configparser.ConfigParser()
-    config.read('config/config.ini')  # TODO error check here could maybe
-                                      #      replace previous if block
+    config.read('config/config.ini')
+
     value = config[section][key]
 
-    if not value:  # if value is not assigned yet, set it now
-        config.set(section, key, 'TODO')  # TODO write real setter code
+    if not value:  # if value is not in file yet, add it now
+        config.set(section, key, None)
         with open('config/config.ini', 'w', encoding='utf8') as configfile:
             config.write(configfile)
         value = config[section][key]
 
     return value
+
 
 def set_config_value(section, key, value):
     """Sets value for the selected element of config.ini
