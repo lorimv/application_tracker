@@ -4,7 +4,8 @@
 import os
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-SCOPES = ['https://www.googleapis.com/auth/drive.file',
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets',
+          'https://www.googleapis.com/auth/documents',
           'https://www.googleapis.com/auth/gmail.send']
 
 
@@ -31,8 +32,6 @@ def authenticate(credentials_path):
         Credentials: credentials object used to build service
 
     """
-    # store path from environment variable
-    # credentials_path = os.environ.get('CLFILL_KEY_PATH')
     # create Flow instance using specified path
     flow = InstalledAppFlow.from_client_secrets_file(credentials_path, SCOPES)
     credentials = flow.run_local_server(port=0)

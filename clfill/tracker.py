@@ -2,9 +2,11 @@ from googleapiclient.discovery import build
 from . import credentials
 from .mailer import send_mail
 from .config_handler import get_config_value, set_config_value
-# import json
+
 
 def create_tracker():
+    """initializes tracker spreadsheet
+    """
     service = build('sheets', 'v4', credentials=credentials)
 
     tracker_body = {
@@ -38,21 +40,23 @@ def create_tracker():
 
 
 def update_tracker():
-    """updates tracker, calling email follow up functions
+    """Adds user inputs to the tracker
     """
-    # TODO write logic for document editor functions
-
-    service = build('drive', 'v3', credentials=credentials)
+    service = build('sheets', 'v4', credentials=credentials)
     if get_config_value('Tracker', 'trackerId') == '':  # ...there is no trackerId in ini file...
-        tracker = service.files().create()  # create tracker, add id to ini TODO we now are using drive api vs sheets, update syntax
-        set_config_value('Tracker', 'trackerId', tracker.TRACKERS_ID_HERE_TODO)
+        create_tracker()
+
+    # TODO insert data from command line into second row of tracker
+
 
 def get_email_info():
-    # returns the email, company name, job position from any non-followed up applications
-    tracker_id = (get_config_value('Tracker', 'trackerId'))
-    if (tracker_id == ''):  # TODO the place where we store tracker's docId is empty...
+    """returns the email, company name, job position from any
+    non-followed up outstanding applications
+    """
+    tracker_id = get_config_value('Tracker', 'trackerId')
+    if tracker_id == '':
         return []
-    
+
     # up here we will configure 'range' vars to include columns for company, position, and emails
     # check if an app is in progress ('Yes') ->
     # check if an app has been followed up ('No') ->
