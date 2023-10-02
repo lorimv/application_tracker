@@ -55,12 +55,12 @@ def get_config_value(section, key):
 
     value = config[section][key]
 
-    if not value:  # if value is not in file yet, add it now
+    if not value:  # if value is (somehow) not in file yet, add it now
         config.set(section, key, None)
         with open('config/config.ini', 'w', encoding='utf8') as configfile:
             config.write(configfile)
         value = config[section][key]
-
+    # TODO maybe quit + ask user to do initialize command if no value
     return value
 
 

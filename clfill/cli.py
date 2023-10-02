@@ -1,7 +1,21 @@
 import argparse
 from .filler import method
 
-# TODO TODO TODO TODO this function is default rn (do cli last)
+# TODO TODO TODO TODO COMMMANDS!!!!! :)
+#   command to edit ini file
+#       creates ini if necessary
+#       asks user for unfilled user info (name, etc.)
+#       pages through (maybe: "Edit 'Tracker' values? (Y/N)"
+#           ("Mailer contains empty parameters! Edit? (Y/N)")
+#   command to track new application
+#       query user for needed info
+#       add to tracker
+#       additional arg to dump to cover letter
+#   command to send emails to ready applications
+#       uses tracker fns to read tracker
+#       uses mailer to send emails from data gathered by tracker
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='cover letter filler')
     parser.add_argument('bait', help='Stand-in arg.')

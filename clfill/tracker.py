@@ -12,6 +12,9 @@ from .config_handler import get_config_value, set_config_value
 
 def create_tracker():
     """initializes tracker spreadsheet
+
+    Return:
+        str: id of new spreadsheet
     """
 # TODO ensure create_tracker is also called when trackerId is set, but invalid
 # (aka user manually deleted tracker file in their drive account
@@ -46,15 +49,21 @@ def create_tracker():
     tracker = service.spreadsheets().create(body=tracker_body).execute()
     set_config_value('Tracker', 'trackerId', tracker['spreadsheetId'])
 
+    return tracker['spreadsheetId']
+
 
 def update_tracker():
     """Adds user inputs to the tracker
     """
     service = build('sheets', 'v4', credentials=credentials)
-    if get_config_value('Tracker', 'trackerId') == '':  # ...there is no trackerId in ini file...
-        create_tracker()
+    tracker_id = get_config_value('Tracker', 'trackerId')
+    if tracker_id == '':  # ...there is no trackerId in ini file...
+        tracker_id = create_tracker()
 
     # TODO insert data from command line into second row of tracker
+    insert_range = ""
+    result = service.spreadsheets().values().append(
+        spreadsheetId=tracker_id, range=insert_range)
 
 
 def get_email_info():
@@ -89,6 +98,7 @@ def get_email_info():
                and app_date <= one_week_ago):  # bout a week ago
                 email_info.append(row)
     # TODO figure out how to keep track of which rows to update column D
+    # (row should be an object that contains row # as parameter)
     return email_info
 
 
@@ -98,6 +108,6 @@ def email_scheduler(email_info):
     Params:
         email_info ([str]): rows (individual applcs) needed to pass into mailer.send_mail()
     """
-    # TODO ensure email_scheduler properly sets column D ('Followed up?')
     for row in email_info:
-        send_mail(row[0], row[1], row[2], row[3])  # TODO actually get params
+        send_mail(row[0], row[1], row[2], row[6])
+        # TODO set column D (Followed up) to Yes

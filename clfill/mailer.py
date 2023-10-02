@@ -1,3 +1,5 @@
+"""responsible for sending emails
+"""
 import base64
 from email.message import EmailMessage
 
@@ -5,21 +7,20 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 from . import credentials
-from .tracker import get_email_info  # unnecessary? i think tracker should convert data from sheets to readable stuff
 from .config_handler import get_config_value
 
 # this is the module that will auto-send follow up emails when -m is called
 # im thinking it will take arguments from tracker module that returns company name & email & job title
 
 
-def send_mail(company_name, position_name, company_email, app_date):
-    """Sends follow-up email, based on function parameters
+def send_mail(company_name, position_name, app_date, company_email):
+    """Sends follow-up email, according to function parameters
 
     Args:
         company_name (str): name of company
         position_name (str): name of position
-        company_email (str): company's email address
         app_date (str): date application was originally sent
+        company_email (str): company's email address
 
     Returns:
         ???: draft of email ig? need to read documentation again
