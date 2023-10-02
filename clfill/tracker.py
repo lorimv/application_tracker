@@ -1,7 +1,11 @@
+"""module housing all spreadsheet-related functions
+"""
+from datetime import datetime, timedelta
 from googleapiclient.discovery import build
 from . import credentials
 from .mailer import send_mail
 from .config_handler import get_config_value, set_config_value
+
 # TODO maybe add refresh() allowing users to inform tracker when app is denied
 # (currently this must be done manually in the user's slides account)
 
@@ -78,10 +82,13 @@ def get_email_info():
     values = outstanding_apps.get('values', [])
 
     if values:
-        email_info = [value for value in values if value and value[3] == 'No'
-                      and value[4] == 'Yes' and value[2] >= 'TODAY\'S DATE + 1 WEEK']
-    # TODO finish third check where C (App Date) was bout a week ago
-
+        one_week_ago = datetime.today() - timedelta(days=7)
+        for row in values:
+            app_date = datetime.strptime(row[2], '%m/%d')
+            if (row and row[3] == 'No' and row[4] == 'Yes'
+               and app_date <= one_week_ago):  # bout a week ago
+                email_info.append(row)
+    # TODO figure out how to keep track of which rows to update column D
     return email_info
 
 
