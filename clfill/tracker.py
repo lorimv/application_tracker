@@ -2,11 +2,15 @@ from googleapiclient.discovery import build
 from . import credentials
 from .mailer import send_mail
 from .config_handler import get_config_value, set_config_value
+# TODO maybe add refresh() allowing users to inform tracker when app is denied
+# (currently this must be done manually in the user's slides account)
 
 
 def create_tracker():
     """initializes tracker spreadsheet
     """
+# TODO ensure create_tracker is also called when trackerId is set, but invalid
+# (aka user manually deleted tracker file in their drive account
     service = build('sheets', 'v4', credentials=credentials)
 
     tracker_body = {
@@ -66,10 +70,18 @@ def get_email_info():
     service = build('sheets', 'v4', credentials=credentials)
     email_info = []
 
-    for n in (n):  # TODO edit logic here to add each valid row to email_info array
-        result = service.spreadsheets().values().batchGet(
-            spreadsheetId=tracker_id, ranges=INSERTRANGEHERE).execute()
-        email_info.append(result)
+    valid_cells = 'A2:H'
+
+    outstanding_apps = service.spreadsheets().values().get(
+        spreadsheetId=tracker_id, range=valid_cells).execute()
+
+    values = outstanding_apps.get('values', [])
+
+    if values:
+        email_info = [value for value in values if value and value[3] == 'No'
+                      and value[4] == 'Yes' and value[2] >= 'TODAY\'S DATE + 1 WEEK']
+    # TODO finish third check where C (App Date) was bout a week ago
+
     return email_info
 
 
@@ -77,7 +89,8 @@ def email_scheduler(email_info):
     """this fn will be responsible for calling send_mail on each necessary row
     for each spreadsheet row in email_info list...
     Params:
-        email_info ([str]): rows (individual apps) needed to pass into mailer.send_mail()
+        email_info ([str]): rows (individual applcs) needed to pass into mailer.send_mail()
     """
+    # TODO ensure email_scheduler properly sets column D ('Followed up?')
     for row in email_info:
         send_mail(row[0], row[1], row[2], row[3])  # TODO actually get params
