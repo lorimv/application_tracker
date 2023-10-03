@@ -61,7 +61,7 @@ def update_tracker():
         tracker_id = create_tracker()
 
     # TODO insert data from command line into second row of tracker
-    insert_range = ""
+    insert_range = "A2:H2"
     result = service.spreadsheets().values().append(
         spreadsheetId=tracker_id, range=insert_range)
 
@@ -74,7 +74,9 @@ def get_email_info():
     if tracker_id == '':
         return []
 
-    # up here we will configure 'range' vars to include columns for company, position, and emails
+    # up here we will configure 'range' vars to include columns for company,
+    # position, and emails
+
     # check if an app is in progress ('Yes') ->
     # check if an app has been followed up ('No') ->
     # check if an app is ready to be followed up (app date >= today's date) ->
@@ -95,10 +97,11 @@ def get_email_info():
         for row in values:
             app_date = datetime.strptime(row[2], '%m/%d')
             if (row and row[3] == 'No' and row[4] == 'Yes'
+               and row[6] != ''  # there is an email listed
                and app_date <= one_week_ago):  # bout a week ago
                 email_info.append(row)
     # TODO figure out how to keep track of which rows to update column D
-    # (row should be an object that contains row # as parameter)
+    # (row should be an object that contains row num as parameter)
     return email_info
 
 
@@ -106,7 +109,8 @@ def email_scheduler(email_info):
     """this fn will be responsible for calling send_mail on each necessary row
     for each spreadsheet row in email_info list...
     Params:
-        email_info ([str]): rows (individual applcs) needed to pass into mailer.send_mail()
+        email_info ([str]): rows (individual applcs) needed to pass into
+                            mailer.py's send_mail()
     """
     for row in email_info:
         send_mail(row[0], row[1], row[2], row[6])

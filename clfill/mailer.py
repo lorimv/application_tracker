@@ -29,6 +29,8 @@ def send_mail(company_name, position_name, app_date, company_email):
     MY_NAME = get_config_value('Mailer', 'myName')
     MY_EMAIL = get_config_value('Mailer', 'myEmail')
 
+    # TODO maybe ask for confirmation before sending an email jic
+
     try:
         # The following code block is the writer/sender for follow-up emails
         service = build('gmail', 'v1', credentials=credentials)
@@ -51,7 +53,7 @@ def send_mail(company_name, position_name, app_date, company_email):
 
         message['To'] = company_email
         message['From'] = MY_EMAIL
-        message['Subject'] = ('Application for ' + position_name + ' at ' + company_name)
+        message['Subject'] = 'Application for ' + position_name + ' at ' + company_name
 
         encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
 

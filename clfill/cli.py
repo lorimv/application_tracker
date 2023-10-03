@@ -24,7 +24,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('-v', '--verbose', help='Verbose output.', action='store_true')
     parser.add_argument('-i', '--ignore-path-check', help="Stand-in arg.\n" +
                         "Stand-in arg -- line 2", action="store_true")
-    parser.add_argument('-dt', '--dont-use-tempdir', help="Prevent the tool from creating a temporary directory when creating the exploit.\n" + 
+    parser.add_argument('-dt', '--dont-use-tempdir', help="Prevent the tool from creating a temporary directory when creating the exploit.\n" +
                         "Instead, create the intermediate folders in current working directory.", action="store_true")
     parser.add_argument("-pt", "--preserve-temp", help="Preserve the temporary directory after creating the exploit. Has no effect if -dt or --dont-use-tempdir is not specified.")
     return parser.parse_args()
