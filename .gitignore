@@ -4,6 +4,9 @@ venv/
 # Ignore Python cache files
 __pycache__/
 
+# Ignore tests
+tests/
+
 # Ignore distribution files
 dist/
 build/

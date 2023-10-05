@@ -1,10 +1,12 @@
 """__init__ module, ensures proper setup of config.ini / credentials
 """
-
 import sys
+import os
 from .config_handler import config_exists, create_config
 from .auth import authenticate, get_path
 
+
+os.chdir("clfill")  # TODO LAZY SOLUTION< ONLY FOR TESTING!! FIGURE OUT PACKAGING LATER
 # Begin by ensuring config file exists...
 if not config_exists():
     create_config()  # ...& creating one with default values if it dne

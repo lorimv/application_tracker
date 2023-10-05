@@ -1,6 +1,5 @@
 """Module responsible for all interactions with config.ini file
 """
-
 import configparser
 from os.path import exists
 from os import mkdir
@@ -13,6 +12,7 @@ def config_exists():
         bool: T/F, does config.ini exist in the proper path?
 
     """
+    # TODO figure out packaging cwd (or absolute dir)
     return exists('config/config.ini')
 
 
@@ -26,11 +26,11 @@ def create_config():
     config = configparser.ConfigParser()
 
     config.add_section('Tracker')
-    config.set('Tracker', 'trackerId', None)
+    config.set('Tracker', 'trackerId', '')
 
     config.add_section('Mailer')
-    config.set('Mailer', 'myEmail', None)  # Should we ask here? Additionally,
-    config.set('Mailer', 'myName', None)   # should setup be done with cli?
+    config.set('Mailer', 'myEmail', '')  # Should we ask here? Additionally,
+    config.set('Mailer', 'myName', '')   # should setup be done with cli?
 
     with open('config/config.ini', 'w', encoding='utf8') as configfile:
         config.write(configfile)
@@ -56,7 +56,7 @@ def get_config_value(section, key):
     value = config[section][key]
 
     if not value:  # if value is (somehow) not in file yet, add it now
-        config.set(section, key, None)
+        config.set(section, key, '')
         with open('config/config.ini', 'w', encoding='utf8') as configfile:
             config.write(configfile)
         value = config[section][key]
