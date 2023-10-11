@@ -10,49 +10,7 @@ from .config_handler import get_config_value, set_config_value
 # (currently this must be done manually in the user's slides account)
 
 
-def create_tracker():
-    """initializes tracker spreadsheet
-
-    Return:
-        str: id of new spreadsheet
-    """
-# TODO ensure create_tracker is also called when trackerId is set, but invalid
-# (aka user manually deleted tracker file in their drive account
-    service = build('sheets', 'v4', credentials=credentials)
-
-    tracker_body = {
-        'properties': {
-            'title': 'clfill_application_tracker'
-        },
-        'sheets': [
-            {
-                'data': [
-                    {
-                        'rowData': [
-                            {'values': [
-                                {'Company': 'Header1'},
-                                {'Job Title': 'Header2'},
-                                {'App Date': 'Header3'},
-                                {'Followed Up': 'Header4'},
-                                {'In Progress': 'Header5'},
-                                {'Location': 'Header6'},
-                                {'Company Email': 'Header7'},
-                                {'Other': 'Header8'}]
-                             }
-                        ]
-                    }
-                ]  # jesus
-            }
-        ]
-    }
-
-    tracker = service.spreadsheets().create(body=tracker_body).execute()
-    set_config_value('Tracker', 'trackerId', tracker['spreadsheetId'])
-
-    return tracker['spreadsheetId']
-
-
-def update_tracker():
+def update_tracker(company, job_title, location, employer_email):
     """Adds user inputs to the tracker
     """
     service = build('sheets', 'v4', credentials=credentials)
@@ -60,10 +18,31 @@ def update_tracker():
     if tracker_id == '':  # ...there is no trackerId in ini file...
         tracker_id = create_tracker()
 
-    # TODO ensure this is actually how you INSERT a value
-    insert_range = "A2:H2"
-    result = service.spreadsheets().values().append(
-        spreadsheetId=tracker_id, range=insert_range)
+    # adds a blank row above all values
+    result = service.spreadsheets().values().get(
+            spreadsheedId=tracker_id, range='A2:H').execute()
+    tracker_vals = result.get('values', [])
+    if tracker_vals:
+        tracker_vals.insert(0, [""] * 8)
+    paste = {'values': tracker_vals}
+    result = service.spreadsheets().values().update(
+            spreadsheetId=tracker_id, range='A2:H',
+            valueInputOption='RAW', body=paste).execute()
+
+    new_application = {
+            'values': [
+              [
+                company,
+                job_title,
+                APPDATE,
+                "No",
+                "Yes",
+                location,
+                employer_email,
+                ""
+              ]
+            ]
+          }
 
 
 def get_email_info():
@@ -122,3 +101,45 @@ def email_scheduler(email_info):
         send_mail(row[0], row[1], row[2], row[6])
         # TODO set column D (Followed up) to Yes
         service.spreadsheets().values()
+
+
+def create_tracker():
+    """initializes tracker spreadsheet
+
+    Return:
+        str: id of new spreadsheet
+    """
+# TODO ensure create_tracker is also called when trackerId is set, but invalid
+# (aka user manually deleted tracker file in their drive account
+    service = build('sheets', 'v4', credentials=credentials)
+
+    tracker_body = {
+        'properties': {
+            'title': 'clfill_application_tracker'
+        },
+        'sheets': [
+            {
+                'data': [
+                    {
+                        'rowData': [
+                            {'values': [
+                                {'Company': 'Header1'},
+                                {'Job Title': 'Header2'},
+                                {'App Date': 'Header3'},
+                                {'Followed Up': 'Header4'},
+                                {'In Progress': 'Header5'},
+                                {'Location': 'Header6'},
+                                {'Company Email': 'Header7'},
+                                {'Other': 'Header8'}]
+                             }
+                        ]
+                    }
+                ]  # jesus
+            }
+        ]
+    }
+
+    tracker = service.spreadsheets().create(body=tracker_body).execute()
+    set_config_value('Tracker', 'trackerId', tracker['spreadsheetId'])
+
+    return tracker['spreadsheetId']
