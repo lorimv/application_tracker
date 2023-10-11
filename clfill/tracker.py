@@ -60,7 +60,7 @@ def update_tracker():
     if tracker_id == '':  # ...there is no trackerId in ini file...
         tracker_id = create_tracker()
 
-    # TODO insert data from command line into second row of tracker
+    # TODO ensure this is actually how you INSERT a value
     insert_range = "A2:H2"
     result = service.spreadsheets().values().append(
         spreadsheetId=tracker_id, range=insert_range)
@@ -112,6 +112,13 @@ def email_scheduler(email_info):
         email_info ([str]): rows (individual applcs) needed to pass into
                             mailer.py's send_mail()
     """
+    if email_info == []:  # more efficient than building when not necessary
+        return
+
+    service = build('sheets', 'v4', credentials=credentials)
+    tracker_id = get_config_value('Tracker', 'trackerId')
+
     for row in email_info:
         send_mail(row[0], row[1], row[2], row[6])
         # TODO set column D (Followed up) to Yes
+        service.spreadsheets().values()
