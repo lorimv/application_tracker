@@ -53,7 +53,7 @@ def get_config_value(section, key):
     config = configparser.ConfigParser()
     config.read('config/config.ini')
 
-    value = config[section][key]
+    value = config[section][key]  #TODO may throw an error instantly, CHECK DOCS
 
     if not value:  # if value is (somehow) not in file yet, add it now
         config.set(section, key, '')
@@ -73,6 +73,7 @@ def set_config_value(section, key, value):
         value (str): the value we would like to set key to
     """
     config = configparser.ConfigParser()
+    config.read('config/config.ini')
 
     config[section][key] = value
 

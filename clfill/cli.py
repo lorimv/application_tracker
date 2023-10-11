@@ -1,4 +1,5 @@
 import argparse
+from .tracker import update_tracker
 from .filler import method
 
 # TODO TODO TODO TODO COMMMANDS!!!!! :)
@@ -34,22 +35,24 @@ def query():
     print("Hola hola")
 
     print("Let's start by getting the name of the company: ")
-    company_long = input()
-
-    print("yeah aight now the shortened company name: ")
-    company_short = input()
+    company = input()
 
     print("Position name (full)?")
-    position_long = input()
+    position = input()
 
-    print("Now tha shortened position name")
-    position_short = input()
+    print('location: ')
+    followed = input()
+
+    print('email: ')
+    email = input()
+
+    update_tracker(company, position, '1/33', followed, email)
 
 
 def main():
     # good enough for now
     query()
-    method()  # maybe arguments into filler (docs)  & tracker (sheets), mailer will use info from spreadsheet when -m
+    # method()  # maybe arguments into filler (docs)  & tracker (sheets), mailer will use info from spreadsheet when -m
 
 
 if __name__ == '__main__':

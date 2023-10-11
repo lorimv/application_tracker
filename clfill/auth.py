@@ -37,5 +37,4 @@ def authenticate(credentials_path):
     credentials = flow.run_local_server(port=0)
     return credentials
 
-# TODO maybe add ini support, logic to check for ini creds before
-# getting path to json credentials user secret & creating flow
+# TODO I THINK we should figure out how to save login info for ease of use

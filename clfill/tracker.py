@@ -10,7 +10,7 @@ from .config_handler import get_config_value, set_config_value
 # (currently this must be done manually in the user's slides account)
 
 
-def update_tracker(company, job_title, location, employer_email):
+def update_tracker(company, job_title, date, location, employer_email):
     """Adds user inputs to the tracker
     """
     service = build('sheets', 'v4', credentials=credentials)
@@ -20,29 +20,34 @@ def update_tracker(company, job_title, location, employer_email):
 
     # adds a blank row above all values
     result = service.spreadsheets().values().get(
-            spreadsheedId=tracker_id, range='A2:H').execute()
+            spreadsheetId=tracker_id, range='A2:H').execute()
     tracker_vals = result.get('values', [])
     if tracker_vals:
         tracker_vals.insert(0, [""] * 8)
     paste = {'values': tracker_vals}
+    # TODO clear first! or empty cells will not overwrite!
     result = service.spreadsheets().values().update(
             spreadsheetId=tracker_id, range='A2:H',
             valueInputOption='RAW', body=paste).execute()
 
+    # inserts the new application in the tracker
     new_application = {
-            'values': [
-              [
-                company,
-                job_title,
-                APPDATE,
-                "No",
-                "Yes",
-                location,
-                employer_email,
-                ""
-              ]
-            ]
-          }
+                'values': [
+                  [
+                    company,
+                    job_title,
+                    date,  # TODO decide where to put date-fetching code (prob cli)
+                    "No",
+                    "Yes",
+                    location,
+                    employer_email,
+                    ""
+                  ]
+                ]
+              }
+    service.spreadsheets().values().update(
+            spreadsheetId=tracker_id, range='A2:H2',
+            valueInputOption='RAW', body=new_application).execute()
 
 
 def get_email_info():
@@ -79,7 +84,7 @@ def get_email_info():
                and row[6] != ''  # there is an email listed
                and app_date <= one_week_ago):  # bout a week ago
                 email_info.append(row)
-    # TODO figure out how to keep track of which rows to update column D
+    # TODO figure out how to keep track of which rows to update() column D
     # (row should be an object that contains row num as parameter)
     return email_info
 
@@ -123,14 +128,14 @@ def create_tracker():
                     {
                         'rowData': [
                             {'values': [
-                                {'Company': 'Header1'},
-                                {'Job Title': 'Header2'},
-                                {'App Date': 'Header3'},
-                                {'Followed Up': 'Header4'},
-                                {'In Progress': 'Header5'},
-                                {'Location': 'Header6'},
-                                {'Company Email': 'Header7'},
-                                {'Other': 'Header8'}]
+                                {"userEnteredValue": {"stringValue": 'Company'}},
+                                {"userEnteredValue": {"stringValue": 'Job Title'}},
+                                {"userEnteredValue": {"stringValue": 'App Date'}},
+                                {"userEnteredValue": {"stringValue": 'Followed Up?'}},
+                                {"userEnteredValue": {"stringValue": 'In Progress'}},
+                                {"userEnteredValue": {"stringValue": 'Location'}},
+                                {"userEnteredValue": {"stringValue": 'Company Email'}},
+                                {"userEnteredValue": {"stringValue": 'Other'}}]
                              }
                         ]
                     }
