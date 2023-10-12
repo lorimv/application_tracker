@@ -1,6 +1,6 @@
 """module housing all spreadsheet-related functions
 """
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from googleapiclient.discovery import build
 from . import credentials
 from .mailer import send_mail
@@ -10,8 +10,14 @@ from .config_handler import get_config_value, set_config_value
 # (currently this must be done manually in the user's slides account)
 
 
-def update_tracker(company, job_title, date, location, employer_email):
+def add_application(company, job_title, location, employer_email):
     """Adds user inputs to the tracker
+
+    Params:
+        company (str): company name
+        job_title (str): name of the position applied to
+        location (str): location of position
+        employer_email (str): address to send follow-up email to
     """
     service = build('sheets', 'v4', credentials=credentials)
     tracker_id = get_config_value('Tracker', 'trackerId')
@@ -19,24 +25,27 @@ def update_tracker(company, job_title, date, location, employer_email):
         tracker_id = create_tracker()
 
     # adds a blank row above all values
-    result = service.spreadsheets().values().get(
+    result = service.spreadsheets().values().get(  # TODO check for HttpError
             spreadsheetId=tracker_id, range='A2:H').execute()
     tracker_vals = result.get('values', [])
     if tracker_vals:
         tracker_vals.insert(0, [""] * 8)
     paste = {'values': tracker_vals}
-    # TODO clear first! or empty cells will not overwrite!
-    result = service.spreadsheets().values().update(
-            spreadsheetId=tracker_id, range='A2:H',
-            valueInputOption='RAW', body=paste).execute()
 
-    # inserts the new application in the tracker
+    # clears all values, pastes them one below top row
+    service.spreadsheets().values().clear(
+            spreadsheetId=tracker_id, range='A2:H').execute()
+    result = service.spreadsheets().values().append(
+            spreadsheetId=tracker_id, range='A2:H',
+            valueInputOption='USER_ENTERED', body=paste).execute()
+
+    # inserts the new application in the top row
     new_application = {
                 'values': [
                   [
                     company,
                     job_title,
-                    date,  # TODO decide where to put date-fetching code (prob cli)
+                    datetime.today().strftime('%m/%d'),
                     "No",
                     "Yes",
                     location,
@@ -47,12 +56,15 @@ def update_tracker(company, job_title, date, location, employer_email):
               }
     service.spreadsheets().values().update(
             spreadsheetId=tracker_id, range='A2:H2',
-            valueInputOption='RAW', body=new_application).execute()
+            valueInputOption='USER_ENTERED', body=new_application).execute()
 
 
 def get_email_info():
     """returns the email, company name, job position from any
     non-followed up outstanding applications
+
+    Return:
+        [str]: info needed to send email
     """
     tracker_id = get_config_value('Tracker', 'trackerId')
     if tracker_id == '':
@@ -109,7 +121,7 @@ def email_scheduler(email_info):
 
 
 def create_tracker():
-    """initializes tracker spreadsheet
+    """helper; initializes tracker spreadsheet
 
     Return:
         str: id of new spreadsheet

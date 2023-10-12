@@ -1,5 +1,5 @@
 import argparse
-from .tracker import update_tracker
+from .tracker import add_application
 from .filler import method
 
 # TODO TODO TODO TODO COMMMANDS!!!!! :)
@@ -46,7 +46,7 @@ def query():
     print('email: ')
     email = input()
 
-    update_tracker(company, position, '1/33', followed, email)
+    add_application(company, position, followed, email)
 
 
 def main():
