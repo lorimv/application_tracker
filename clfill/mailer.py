@@ -26,8 +26,8 @@ def send_mail(company_name, position_name, app_date, company_email):
         ???: draft of email ig? need to read documentation again
 
     """
-    MY_NAME = get_config_value('Mailer', 'myName')
-    MY_EMAIL = get_config_value('Mailer', 'myEmail')
+    MY_NAME = get_config_value('Mailer', 'myName')  # TODO get name (query() in config_handler?)
+    # MY_EMAIL = get_config_value('Mailer', 'myEmail')
 
     # TODO maybe ask for confirmation before sending an email jic
 
@@ -41,7 +41,7 @@ def send_mail(company_name, position_name, app_date, company_email):
                             'My name is ' + MY_NAME + '. I am writing to follow up on my application for the ' +
                             position_name + ' role at ' + company_name + ' on ' + app_date + '.\n\n'
                             'I remain excited about the possibility of joining your team and '
-                            'contributing to its success. I believe my [specific job-related skills]'
+                            'contributing to its success. I believe my knowledge of Agile methodologies and passion for development '
                             ' make me a strong candidate for the position, and I would love to discuss '
                             'the opportunity even further.\n\n'
 
@@ -50,23 +50,23 @@ def send_mail(company_name, position_name, app_date, company_email):
 
                             'Warm regards,\n' +
                             MY_NAME)
+                            # TODO read file as fstring?
 
         message['To'] = company_email
-        message['From'] = MY_EMAIL
+        # message['From'] = MY_EMAIL
         message['Subject'] = 'Application for ' + position_name + ' at ' + company_name
 
         encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
 
         create_message = {
-            'message': {
-                'raw': encoded_message
-            }
+            'raw': encoded_message
         }
 
-        draft = service.users().drafts().create(userId='me',
-                                                body=create_message).execute()
+        send_message = service.users().messages().send(
+                        userId='me', body=create_message).execute()
+        print("email sent!!!")
     except HttpError as e:
         print(e)
-        draft = None
+        send_message = None
 
-    return draft
+    return send_message

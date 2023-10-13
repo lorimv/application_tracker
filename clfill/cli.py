@@ -1,6 +1,8 @@
 import argparse
 from .tracker import add_application
 from .filler import method
+# TODO TEST IMPORTS:
+from .mailer import send_mail
 
 # TODO TODO TODO TODO COMMMANDS!!!!! :)
 #   command to edit ini file
@@ -46,7 +48,7 @@ def query():
     print('email: ')
     email = input()
 
-    add_application(company, position, followed, email)
+    send_mail(company, position, followed, email)
 
 
 def main():

@@ -38,3 +38,4 @@ def authenticate(credentials_path):
     return credentials
 
 # TODO I THINK we should figure out how to save login info for ease of use
+# google api documentation may show how to implement
