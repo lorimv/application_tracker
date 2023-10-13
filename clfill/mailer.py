@@ -62,11 +62,17 @@ def send_mail(company_name, position_name, app_date, company_email):
             'raw': encoded_message
         }
 
-        send_message = service.users().messages().send(
-                        userId='me', body=create_message).execute()
+        # send_message = service.users().messages().send(  # TODO uncomment these!
+        #                userId='me', body=create_message).execute()
         print("email sent!!!")
+        print("debug !")
+        print(company_name)
+        print(company_email)
+        print(app_date)
+        print()
     except HttpError as e:
         print(e)
+        print("probably invalid email recipient")
         send_message = None
-
+    return None
     return send_message

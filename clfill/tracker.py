@@ -84,7 +84,9 @@ def get_email_info():
     valid_cells = 'A2:H'
 
     outstanding_apps = service.spreadsheets().values().get(
-        spreadsheetId=tracker_id, range=valid_cells).execute()
+        spreadsheetId=tracker_id, range=valid_cells,
+        valueRenderOption="FORMULA", dateTimeRenderOption="FORMATTED_STRING"
+        ).execute()
 
     values = outstanding_apps.get('values', [])
     # TODO bout a week ago check is ALWAYS passing test dates 9/1/23 & 12/30/23
@@ -92,11 +94,15 @@ def get_email_info():
         one_week_ago = datetime.today() - timedelta(days=7)
         for row in values:
             try:
-                app_date = datetime.strptime(row[2], '%m/%d')
+                temp = datetime.strptime(row[2], '%m/%d')  # FIXME ugly, ugly fix for api not grabbing full date in fx box
+                app_date = datetime(2023, temp.month, temp.day)
                 if (row and row[3] == 'No' and row[4] == 'Yes'
                    and row[6] != ''  # there is an email listed
                    and app_date <= one_week_ago):  # bout a week ago
                     email_info.append(row)
+                    print("app_date: " + app_date.strftime("%m/%d/%Y"))
+                    print("one_week_ago: " + one_week_ago.strftime("%m/%d/%Y"))
+                    print()
             except ValueError as e:
                 print('invalid application date found: ')
                 print(e)
