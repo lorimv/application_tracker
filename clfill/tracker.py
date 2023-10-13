@@ -87,15 +87,22 @@ def get_email_info():
         spreadsheetId=tracker_id, range=valid_cells).execute()
 
     values = outstanding_apps.get('values', [])
-
+    # TODO bout a week ago check is ALWAYS passing test dates 9/1/23 & 12/30/23
     if values:
         one_week_ago = datetime.today() - timedelta(days=7)
         for row in values:
-            app_date = datetime.strptime(row[2], '%m/%d')
-            if (row and row[3] == 'No' and row[4] == 'Yes'
-               and row[6] != ''  # there is an email listed
-               and app_date <= one_week_ago):  # bout a week ago
-                email_info.append(row)
+            try:
+                app_date = datetime.strptime(row[2], '%m/%d')
+                if (row and row[3] == 'No' and row[4] == 'Yes'
+                   and row[6] != ''  # there is an email listed
+                   and app_date <= one_week_ago):  # bout a week ago
+                    email_info.append(row)
+            except ValueError as e:
+                print('invalid application date found: ')
+                print(e)
+            except IndexError as e:
+                print('no email found: ')
+                print(e)
     # TODO figure out how to keep track of which rows to update() column D
     # (row should be an object that contains row num as parameter)
     return email_info

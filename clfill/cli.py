@@ -1,5 +1,5 @@
 import argparse
-from .tracker import add_application
+from .tracker import add_application, email_scheduler, get_email_info
 from .filler import method
 # TODO TEST IMPORTS:
 from .mailer import send_mail
@@ -51,9 +51,13 @@ def query():
     send_mail(company, position, followed, email)
 
 
+def test():
+    email_scheduler(get_email_info())
+
+
 def main():
     # good enough for now
-    query()
+    test()
     # method()  # maybe arguments into filler (docs)  & tracker (sheets), mailer will use info from spreadsheet when -m
 
 
