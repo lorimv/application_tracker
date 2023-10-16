@@ -59,12 +59,9 @@ def add_application(company, job_title, location, employer_email):
             valueInputOption='USER_ENTERED', body=new_application).execute()
 
 
-def get_email_info():
-    """returns the email, company name, job position from any
-    non-followed up outstanding applications
-
-    Return:
-        [str]: info needed to send email
+def email_scheduler():
+    """calls send_mail using the email, company name, job position from any
+    outstanding applications ready for followup
     """
     tracker_id = get_config_value('Tracker', 'trackerId')
     if tracker_id == '':
@@ -89,51 +86,47 @@ def get_email_info():
 
     values = outstanding_apps.get('values', [])
     if values:
-        for row in values:
-            if helper(row):
+        for row in values:  # maybe loop thru outstanding_apps
+            if ready_for_followup(row):  # allowing us to track what rows to update
                 send_mail(row[0], row[1], row[2], row[6])
-    # TODO figure out how to keep track of which rows to update() column D
-    # (row should be an object that contains row num as parameter)
-    return True
+                # TODO figure out how to update corresponding row
+            print()
 
-def helper(row):
+
+def ready_for_followup(row):
+    """tells us whether the application in the given row is ready to be
+    followed-up with an email
+
+    Params:
+        row ([str]): data contained within a single row of tracker
+            (company, job title, app date, followed up,
+            in progress, location, email)
+    Return:
+        bool: T/F should application be followed up
+    """
     try:
-        temp = datetime.strptime(row[2], '%m/%y')
+        temp = datetime.strptime(row[2], '%m/%d')
         one_week_ago = datetime.today() - timedelta(days=7)
-        app_date = datetime(2023, temp.month, temp.day)
+        app_date = datetime(2023, temp.month, temp.day)  # awful fix for api not getting year
         if (row and row[3] == 'No' and row[4] == 'Yes'
            and row[6] != ''  # there is an email listed
            and app_date <= one_week_ago):  # bout a week ago
-            email_info.append(row)
-            print("app_date: " + app_date.strftime("%m/%d/%Y"))
+            print("app_date: " + app_date.strftime("%m/%d/%Y"))  # verbose?
             print("one_week_ago: " + one_week_ago.strftime("%m/%d/%Y"))
-            print()
+            return True
+        print('Not ready for follow up')
+        print('Job: ' + row[0])
+        return False
     except ValueError as e:
-        print('invalid application date found: ')
+        print('Invalid application date found: ')
+        print('Job: ' + row[0])
+        print('Date: ' + row[2])
         print(e)
+        return False
     except IndexError as e:
-        print('no email found: ')
+        print('A required value does not exist (probably email)')
         print(e)
-
-
-def email_scheduler(email_info):  # TODO i think this is redundant?
-                                  # send straight to mailer, skip this?
-    """this fn will be responsible for calling send_mail on each necessary row
-    for each spreadsheet row in email_info list...
-    Params:
-        email_info ([str]): rows (individual applcs) needed to pass into
-                            mailer.py's send_mail()
-    """
-    if email_info == []:  # more efficient than building when not necessary
-        return
-
-    service = build('sheets', 'v4', credentials=credentials)
-    tracker_id = get_config_value('Tracker', 'trackerId')
-
-    for row in email_info:
-        send_mail(row[0], row[1], row[2], row[6])
-        # TODO set column D (Followed up) to Yes
-        service.spreadsheets().values()
+        return False
 
 
 def create_tracker():

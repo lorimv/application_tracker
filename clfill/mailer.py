@@ -50,7 +50,7 @@ def send_mail(company_name, position_name, app_date, company_email):
 
                             'Warm regards,\n' +
                             MY_NAME)
-                            # TODO read file as fstring?
+                            # TODO read text from txt file as fstring?
 
         message['To'] = company_email
         # message['From'] = MY_EMAIL
@@ -65,11 +65,10 @@ def send_mail(company_name, position_name, app_date, company_email):
         # send_message = service.users().messages().send(  # TODO uncomment these!
         #                userId='me', body=create_message).execute()
         print("email sent!!!")
-        print("debug !")
+        print("just kidding. debug !")
         print(company_name)
         print(company_email)
         print(app_date)
-        print()
     except HttpError as e:
         print(e)
         print("probably invalid email recipient")

@@ -1,5 +1,5 @@
 import argparse
-from .tracker import add_application, email_scheduler, get_email_info
+from .tracker import add_application, email_scheduler
 from .filler import method
 # TODO TEST IMPORTS:
 from .mailer import send_mail
@@ -52,7 +52,7 @@ def query():
 
 
 def test():
-    email_scheduler(get_email_info())
+    email_scheduler()
 
 
 def main():
