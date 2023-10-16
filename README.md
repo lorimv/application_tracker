@@ -12,3 +12,11 @@ Copies template doc in user's acct, then replaces corresponding words
 I also plan to simultaneously add this information to a spreadsheet, and add a command that will use email API to automatically follow up on applications.
 
 Will finish readme when program is complete.
+
+## TODO list:
+Finish the tracker module, properly update sheet when emails are sent
+
+Complete CLI support
+
+Implement global credential object to build service, and allow user to store their login
+(Singleton, and then pickle object? is that even possible? figure out)
