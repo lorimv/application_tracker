@@ -79,7 +79,6 @@ def get_email_info():
     # output job title, company name, email address
 
     service = build('sheets', 'v4', credentials=credentials)
-    email_info = []
 
     valid_cells = 'A2:H'
 
@@ -89,32 +88,36 @@ def get_email_info():
         ).execute()
 
     values = outstanding_apps.get('values', [])
-    # TODO bout a week ago check is ALWAYS passing test dates 9/1/23 & 12/30/23
     if values:
-        one_week_ago = datetime.today() - timedelta(days=7)
         for row in values:
-            try:
-                temp = datetime.strptime(row[2], '%m/%d')  # FIXME ugly, ugly fix for api not grabbing full date in fx box
-                app_date = datetime(2023, temp.month, temp.day)
-                if (row and row[3] == 'No' and row[4] == 'Yes'
-                   and row[6] != ''  # there is an email listed
-                   and app_date <= one_week_ago):  # bout a week ago
-                    email_info.append(row)
-                    print("app_date: " + app_date.strftime("%m/%d/%Y"))
-                    print("one_week_ago: " + one_week_ago.strftime("%m/%d/%Y"))
-                    print()
-            except ValueError as e:
-                print('invalid application date found: ')
-                print(e)
-            except IndexError as e:
-                print('no email found: ')
-                print(e)
+            if helper(row):
+                send_mail(row[0], row[1], row[2], row[6])
     # TODO figure out how to keep track of which rows to update() column D
     # (row should be an object that contains row num as parameter)
-    return email_info
+    return True
+
+def helper(row):
+    try:
+        temp = datetime.strptime(row[2], '%m/%y')
+        one_week_ago = datetime.today() - timedelta(days=7)
+        app_date = datetime(2023, temp.month, temp.day)
+        if (row and row[3] == 'No' and row[4] == 'Yes'
+           and row[6] != ''  # there is an email listed
+           and app_date <= one_week_ago):  # bout a week ago
+            email_info.append(row)
+            print("app_date: " + app_date.strftime("%m/%d/%Y"))
+            print("one_week_ago: " + one_week_ago.strftime("%m/%d/%Y"))
+            print()
+    except ValueError as e:
+        print('invalid application date found: ')
+        print(e)
+    except IndexError as e:
+        print('no email found: ')
+        print(e)
 
 
-def email_scheduler(email_info):
+def email_scheduler(email_info):  # TODO i think this is redundant?
+                                  # send straight to mailer, skip this?
     """this fn will be responsible for calling send_mail on each necessary row
     for each spreadsheet row in email_info list...
     Params:
