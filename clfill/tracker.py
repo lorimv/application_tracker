@@ -2,6 +2,7 @@
 """
 from datetime import datetime, timedelta, date
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 from . import credentials
 from .mailer import send_mail
 from .config_handler import get_config_value, set_config_value
@@ -25,8 +26,14 @@ def add_application(company, job_title, location, employer_email):
         tracker_id = create_tracker()
 
     # adds a blank row above all values
-    result = service.spreadsheets().values().get(  # TODO check for HttpError
-            spreadsheetId=tracker_id, range='A2:H').execute()
+    try:
+        result = service.spreadsheets().values().get(
+                spreadsheetId=tracker_id, range='A2:H').execute()
+    except HttpError as e:
+        print('Invalid trackerId in .ini file,')
+        print('ensure tracker is still in drive')
+        print(e)
+        return
     tracker_vals = result.get('values', [])
     if tracker_vals:
         tracker_vals.insert(0, [""] * 8)
