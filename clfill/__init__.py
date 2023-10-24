@@ -2,6 +2,7 @@
 """
 import sys
 import os
+from oauthlib.oauth2 import AccessDeniedError
 from .config_handler import config_exists, create_config
 from .auth import authenticate, get_path
 
@@ -15,6 +16,7 @@ if os.getcwd() != "/home/lorimv/Code/application_tracker/clfill":
 if not config_exists():
     create_config()  # ...& creating one with default values if it dne
 
+# FIXME creds is called before --help. This should be moved to main?
 try:
     # calls auth's get_path() function on startup...
     credentials = authenticate(get_path())  # I think this is a bad idea, but idk where else to store credentials. (Pickle?)
@@ -26,8 +28,12 @@ except ValueError as e:
     print('(Linux cmd: \'export CLFILL_KEY_PATH=<path>\')')
     sys.exit()
 # TODO add specific exceptions here (read authenticate() documentation!)
+except AccessDeniedError as e:
+    print(e)
+    print("Allow access next time!!!")
+    sys.exit()
 except Exception as e:
     # any other error
     print(e)
-    print('authentication failed!!!')
+    print('authentication failed!!! (unspecified error)')
     sys.exit()

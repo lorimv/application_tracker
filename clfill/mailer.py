@@ -71,7 +71,10 @@ def send_mail(company_name, position_name, app_date, company_email):
         print(app_date)
     except HttpError as e:
         print(e)
-        print("probably invalid email recipient")
+        print("Invalid email!")
+        print('Manual follow up required')
+        print('Company: ' + company_name)
+        print('Position: ' + position_name)
         send_message = None
-    return None
+    return None  # dummy return (sick of sending emails while testing)
     return send_message

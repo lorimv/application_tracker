@@ -20,6 +20,7 @@ def add_application(company, job_title, location, employer_email):
         location (str): location of position
         employer_email (str): address to send follow-up email to
     """
+    # TODO add defaults? to help prevent oob errors later
     service = build('sheets', 'v4', credentials=credentials)
     tracker_id = get_config_value('Tracker', 'trackerId')
     if tracker_id == '':  # ...there is no trackerId in ini file...
@@ -72,7 +73,7 @@ def email_scheduler():
     """
     tracker_id = get_config_value('Tracker', 'trackerId')
     if tracker_id == '':
-        return []
+        return
 
     # up here we will configure 'range' vars to include columns for company,
     # position, and emails
@@ -86,15 +87,15 @@ def email_scheduler():
 
     valid_cells = 'A2:H'
 
-    outstanding_apps = service.spreadsheets().values().get(
+    all_applications = service.spreadsheets().values().get(
         spreadsheetId=tracker_id, range=valid_cells,
         valueRenderOption="FORMULA", dateTimeRenderOption="FORMATTED_STRING"
         ).execute()
 
-    values = outstanding_apps.get('values', [])
+    values = all_applications.get('values', [])
     if values:
-        for row in values:  # maybe loop thru outstanding_apps
-            if ready_for_followup(row):  # allowing us to track what rows to update
+        for row in values:  # loop thru all applications (rows) in sheet
+            if ready_for_followup(row):  # if row is ready...
                 send_mail(row[0], row[1], row[2], row[6])
                 # TODO figure out how to update corresponding row
             print()
@@ -131,8 +132,14 @@ def ready_for_followup(row):
         print(e)
         return False
     except IndexError as e:
-        print('A required value does not exist (probably email)')
-        print(e)
+        if len(row) == 6:
+            print('Email Missing!')
+            print('Manual follow-up required:')
+            print('Company: ' + row[0])
+            print('Job Title: ' + row[1])
+        else:
+            print('A required value does not exist')
+            print(e)
         return False
 
 

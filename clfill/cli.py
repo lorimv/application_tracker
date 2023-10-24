@@ -1,8 +1,6 @@
 import argparse
 from .tracker import add_application, email_scheduler
 from .filler import method
-# TODO TEST IMPORTS:
-from .mailer import send_mail
 
 # TODO TODO TODO TODO COMMMANDS!!!!! :)
 #   command to edit ini file
@@ -21,12 +19,14 @@ from .mailer import send_mail
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='cover letter filler')
-    parser.add_argument('-v', '--verbose', help='Verbose output.', action='store_true')
-    parser.add_argument('-i', '--ignore-path-check', help="Stand-in arg.\n" +
-                        "Stand-in arg -- line 2", action="store_true")
+    parser.add_argument('-n', '--new-application', help='Add a new application',
+                        action="store_true")
+    parser.add_argument('-m', '--send-mail', help='Follow up on applications',
+                        action="store_true")
+    parser.add_argument('-v', '--verbose', help='Verbose output.')
     return parser.parse_args()
 
-def query():
+def app_query():
     # Demo function, asks user info needed to fill doc
     print("Hola hola")
 
@@ -37,22 +37,22 @@ def query():
     position = input()
 
     print('location: ')
-    followed = input()
+    location = input()
 
     print('email: ')
     email = input()
 
-    send_mail(company, position, followed, email)
-
-
-def test():
-    email_scheduler()
+    add_application(company, position, location, email)
 
 
 def main():
     options = parse_args()
+
+    if options.new_application:
+        app_query()
     # good enough for now
-    test()
+    elif options.send_mail:
+        email_scheduler()
     # method()  # maybe arguments into filler (docs)  & tracker (sheets), mailer will use info from spreadsheet when -m
 
 
