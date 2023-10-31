@@ -1,6 +1,0 @@
-THIS IS THE DEFAULT EMAIL BODY
-
-My name:             {name}
-Company:             {company}
-Position:            {position}
-Application date:    {date}

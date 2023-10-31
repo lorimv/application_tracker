@@ -21,3 +21,6 @@ build/
 
 # Ignore .ini file (contains personal info)
 *.ini
+
+# Ignore .txt, default will be initialized
+*.txt

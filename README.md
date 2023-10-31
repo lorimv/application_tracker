@@ -20,3 +20,7 @@ Complete CLI support
 
 Implement global credential object to build service, and allow user to store their login
 (Singleton, and then pickle object? is that even possible? figure out)
+
+Getting dates from spreadsheets doesn't get the year. The spreadsheet displays
+month/date, but stores month/date/year when accessed in browser. However api
+seems to only have access to month/date

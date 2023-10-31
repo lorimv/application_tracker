@@ -2,6 +2,7 @@
 """
 import base64
 from email.message import EmailMessage
+from os.path import exists
 
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -76,7 +77,23 @@ def read_body():
         str: text to be sent in email
 
     """
+    if not exists('config/body.txt'):
+        create_body()
+
     with open('config/body.txt', 'r', encoding='utf8') as file:
         body_text = file.read()
 
-        return body_text.strip('\n')
+    return body_text
+
+
+def create_body():
+    """creates a default body.txt
+
+    """
+    with open('config/body.txt', 'w', encoding='utf8') as file:
+        file.write("THIS IS THE DEFAULT EMAIL BODY\n"
+                   "\n"
+                   "My name:             {name}\n"
+                   "Company:             {company}\n"
+                   "Position:            {position}\n"
+                   "Application date:    {date}\n")
