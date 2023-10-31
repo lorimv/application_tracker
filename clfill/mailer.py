@@ -35,22 +35,11 @@ def send_mail(company_name, position_name, app_date, company_email):
         # The following code block is the writer/sender for follow-up emails
         service = build('gmail', 'v1', credentials=credentials)
 
-        message = EmailMessage()  # maybe this could be stored in a file, more accessible for user to edit
-        message.set_content('Hello ' + company_name + ',\n\n'  # (and would take up less space)
+        body_text = read_body() # FIXME grab from body.txt
 
-                            'My name is ' + MY_NAME + '. I am writing to follow up on my application for the ' +
-                            position_name + ' role at ' + company_name + ' on ' + app_date + '.\n\n'
-                            'I remain excited about the possibility of joining your team and '
-                            'contributing to its success. I believe my knowledge of Agile methodologies and passion for development '
-                            ' make me a strong candidate for the position, and I would love to discuss '
-                            'the opportunity even further.\n\n'
-
-                            'Please let me know of any questions I can answer or additional information '
-                            'I can provide. Thank you for your consideration. I look forward to speaking soon!\n\n'
-
-                            'Warm regards,\n' +
-                            MY_NAME)
-                            # TODO read text from txt file as fstring?
+        message = EmailMessage()
+        message.set_content(body_text.format(company=company_name,
+                            position=position_name, date=app_date, name=MY_NAME))
 
         message['To'] = company_email
         # message['From'] = MY_EMAIL
@@ -76,5 +65,18 @@ def send_mail(company_name, position_name, app_date, company_email):
         print('Company: ' + company_name)
         print('Position: ' + position_name)
         send_message = None
-    return None  # dummy return (sick of sending emails while testing)
+    return None  # FIXME dummy return (sick of sending emails while testing)
     return send_message
+
+
+def read_body():
+    """Reads body text from body.txt file
+
+    Return:
+        str: text to be sent in email
+
+    """
+    with open('config/body.txt', 'r', encoding='utf8') as file:
+        body_text = file.read()
+        print(body_text)
+        return body_text.strip('\n')

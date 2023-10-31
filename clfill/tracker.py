@@ -9,7 +9,7 @@ from .config_handler import get_config_value, set_config_value
 
 # TODO maybe add refresh() allowing users to inform tracker when app is denied
 # (currently this must be done manually in the user's slides account)
-
+# TODO open tracker for user in browser?
 
 def add_application(company, job_title, location, employer_email):
     """Adds user inputs to the tracker
