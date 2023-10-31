@@ -1,10 +1,6 @@
-Hello {company} recruitment,
+THIS IS THE DEFAULT EMAIL BODY
 
-My name is {name}. I am writing to follow up on my application for the {position} role at {company} on {date}.
-
-I remain excited about the possibility of joining your team and  contributing to its success. I believe my knowledge of Agile methodologies and passion for development  make me a strong candidate for the position, and I would love to discuss the opportunity even further.
-
-Please let me know of any questions I can answer or additional information I can provide. Thank you for your consideration. I look forward to speaking soon!
-
-Warm regards,
-{name}
+My name:             {name}
+Company:             {company}
+Position:            {position}
+Application date:    {date}

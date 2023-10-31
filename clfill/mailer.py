@@ -78,5 +78,5 @@ def read_body():
     """
     with open('config/body.txt', 'r', encoding='utf8') as file:
         body_text = file.read()
-        print(body_text)
+
         return body_text.strip('\n')
