@@ -2,8 +2,6 @@ import argparse
 from .tracker import add_application, email_scheduler
 from .filler import method
 
-from .mailer import read_body  # FIXME test import, delete
-
 # TODO TODO TODO TODO COMMMANDS!!!!! :)
 #   command to edit ini file
 #       creates ini if necessary
