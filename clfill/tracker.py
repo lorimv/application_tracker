@@ -94,10 +94,10 @@ def email_scheduler():
 
     values = all_applications.get('values', [])
     if values:
-        for row in values:  # loop thru all applications (rows) in sheet
+        for index, row in enumerate(values):  # loop thru all applications (rows) in sheet
             if ready_for_followup(row):  # if row is ready...
                 send_mail(row[0], row[1], row[2], row[6])
-                # TODO figure out how to update corresponding row
+                set_followed_up(index, service)
             print()
 
 
@@ -141,6 +141,35 @@ def ready_for_followup(row):
             print('A required value does not exist')
             print(e)
         return False
+
+
+def set_followed_up(index, service):  # ugly helper, may not be necessary
+    """sets the chosen row of tracker as followed up
+
+    Args:
+        index (int): index of row to be changed (minus 2)
+        service: Sheets API service
+    """
+    # TODO double check to ensure index isn't stored
+    # in scheduler's all_applications obj
+    tracker_id = get_config_value('Tracker', 'trackerId')
+    if tracker_id == '':
+        return
+
+    index += 2
+
+    body = {
+        'values': [
+          [
+            'Yes',
+            ]
+          ]
+        }
+    service.spreadsheets().values().update(
+         spreadsheetId=tracker_id, range=f'D{index}',
+         valueInputOption="RAW",
+         body=body
+         ).execute()
 
 
 def create_tracker():

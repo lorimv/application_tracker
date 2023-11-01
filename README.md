@@ -1,4 +1,4 @@
-# hola hola
+# clfill v 0.8
 
 Python command line application that uses the google docs API to fill in cover letter based on template on user's acct.
 

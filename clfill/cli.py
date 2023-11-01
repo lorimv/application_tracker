@@ -50,8 +50,6 @@ def app_query():
 def main():
     options = parse_args()
 
-    read_body()
-
     if options.new_application:
         app_query()
     # good enough for now

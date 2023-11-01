@@ -36,7 +36,7 @@ def send_mail(company_name, position_name, app_date, company_email):
         # The following code block is the writer/sender for follow-up emails
         service = build('gmail', 'v1', credentials=credentials)
 
-        body_text = read_body() # FIXME grab from body.txt
+        body_text = read_body()
 
         message = EmailMessage()
         message.set_content(body_text.format(company=company_name,
@@ -52,13 +52,13 @@ def send_mail(company_name, position_name, app_date, company_email):
             'raw': encoded_message
         }
 
-        # send_message = service.users().messages().send(  # TODO uncomment these!
-        #                userId='me', body=create_message).execute()
+        send_message = service.users().messages().send(
+                       userId='me', body=create_message).execute()
         print("email sent!!!")
-        print("just kidding. debug !")
-        print(company_name)
-        print(company_email)
-        print(app_date)
+        # print("just kidding. debug !")
+        # print(company_name)
+        # print(company_email)
+        # print(app_date)
     except HttpError as e:
         print(e)
         print("Invalid email!")
@@ -66,7 +66,7 @@ def send_mail(company_name, position_name, app_date, company_email):
         print('Company: ' + company_name)
         print('Position: ' + position_name)
         send_message = None
-    return None  # FIXME dummy return (sick of sending emails while testing)
+
     return send_message
 
 
