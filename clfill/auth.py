@@ -2,7 +2,7 @@
 """
 
 import os
-from os.path import exists
+import json
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2 import credentials
 
@@ -23,7 +23,8 @@ def get_credentials():
         user_credentials = credentials.Credentials.from_authorized_user_file('config/credentials.json')
     except FileNotFoundError:
         user_credentials = authenticate(get_path())
-        credentials.to_authorized_user_file('config/credentials.json')
+        with open('config/credentials.json', 'w', encoding='utf8') as f:
+            json.dump(json.loads(user_credentials.to_json()), f)  # maybe only dump if we know it works?
     return user_credentials
 
 
@@ -52,8 +53,5 @@ def authenticate(credentials_path):
     """
     # create Flow instance using specified path
     flow = InstalledAppFlow.from_client_secrets_file(credentials_path, SCOPES)
-    credentials = flow.run_local_server(port=0)
-    return credentials
-
-# TODO I THINK we should figure out how to save login info for ease of use
-# google api documentation may show how to implement
+    user_credentials = flow.run_local_server(port=0)
+    return user_credentials

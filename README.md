@@ -1,4 +1,4 @@
-# clfill v 0.8
+# clfill v 0.9
 
 Python command line application that uses the google docs API to fill in cover letter based on template on user's acct.
 
@@ -26,8 +26,7 @@ Complete CLI support
 
 Clean set_follow_up(), find out if creating services or passing services as args is best practice
 
-Implement global credential object to build service, and allow user to store their login
-(Singleton, and then pickle object? is that even possible? figure out)
+Properly implement global credential object to build service instead of __init__.py
 
 Getting dates from spreadsheets doesn't get the year. The spreadsheet displays
 month/date, but stores month/date/year when accessed in browser. However api
