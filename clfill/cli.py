@@ -2,6 +2,8 @@ import argparse
 from .tracker import add_application, email_scheduler
 from .filler import method
 
+# TODO maybe from optparse import OptionParser instead, not sure
+
 # TODO TODO TODO TODO COMMMANDS!!!!! :)
 #   command to edit ini file
 #       creates ini if necessary

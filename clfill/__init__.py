@@ -4,7 +4,7 @@ import sys
 import os
 from oauthlib.oauth2 import AccessDeniedError
 from .config_handler import config_exists, create_config
-from .auth import authenticate, get_path
+from .auth import get_credentials
 
 
 if os.getcwd() != "/home/lorimv/Code/application_tracker/clfill":
@@ -19,7 +19,7 @@ if not config_exists():
 # FIXME creds is called before --help. This should be moved to main?
 try:
     # calls auth's get_path() function on startup...
-    credentials = authenticate(get_path())  # I think this is a bad idea, but idk where else to store credentials. (Pickle?)
+    credentials = get_credentials() # I think this is a bad idea, but idk where else to store credentials. (Pickle?)
 except ValueError as e:
     # error thrown if get_path() is not configured
     print(e)

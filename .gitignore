@@ -24,3 +24,6 @@ build/
 
 # Ignore .txt, default will be initialized
 *.txt
+
+clfill/config/
+#ignore the whole config folder actually
