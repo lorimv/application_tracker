@@ -22,7 +22,9 @@ I also plan to implement a separate cover letter template flag that generates a 
 Will finish readme when program is 1.0.
 
 ## TODO list:
-Complete CLI support
+Text color is applied to the box, not the row. So when rows are shifted down in add_application(), edge rows become the wrong color
+
+Logs 'not ready for follow up' even for denied apps (very annoying)
 
 Clean set_follow_up(), find out if creating services or passing services as args is best practice
 

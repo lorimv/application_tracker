@@ -19,7 +19,7 @@ if not config_exists():
 # FIXME creds is called before --help. This should be moved to main?
 try:
     # calls auth's get_path() function on startup...
-    credentials = get_credentials() # I think this is a bad idea, but idk where else to store credentials. (Pickle?)
+    credentials = get_credentials()  # I think this is a bad idea, but idk where else to store credentials. (Pickle?)
 except ValueError as e:
     # error thrown if get_path() is not configured
     print(e)

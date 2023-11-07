@@ -29,8 +29,11 @@ def create_config():
     config.set('Tracker', 'trackerId', '')
 
     config.add_section('Mailer')
-    config.set('Mailer', 'myEmail', '')  # Should we ask here? Additionally,
-    config.set('Mailer', 'myName', '')   # should setup be done with cli?
+    print('Enter your email: ')
+    config.set('Mailer', 'myEmail', input())  # Should we ask here? Additionally,
+    print('Enter your name: ')
+    config.set('Mailer', 'myName', input())   # should setup be done with cli?
+    print('Settings can be changed in clfill/config/config.ini')
 
     with open('config/config.ini', 'w', encoding='utf8') as configfile:
         config.write(configfile)
