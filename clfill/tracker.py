@@ -124,21 +124,21 @@ def ready_for_followup(row):
             return True
         elif row[3] == 'No' and row[4] == 'Yes':
             print('Not ready for follow up')
-            print('Job: ' + row[0])
+            print(f'Job: {row[0]}')
             print()
         return False
     except ValueError as e:
         print('Invalid application date found: ')
-        print('Job: ' + row[0])
-        print('Date: ' + row[2])
+        print(f'Job: {row[0]}')
+        print(f'Date: {row[2]}')
         print(e)
         return False
     except IndexError as e:
         if len(row) == 6 and row[3] == 'No' and row[4] == 'Yes':
             print('Email Missing!')
             print('Manual follow-up required:')
-            print('Company: ' + row[0])
-            print('Job Title: ' + row[1])
+            print(f'Company: {row[0]}')
+            print(f'Job Title: {row[1]}')
             print()
         elif len(row) != 6:
             print('A required value does not exist')

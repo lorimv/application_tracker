@@ -44,7 +44,7 @@ def send_mail(company_name, position_name, app_date, company_email):
 
         message['To'] = company_email
         # message['From'] = MY_EMAIL
-        message['Subject'] = 'Application for ' + position_name + ' at ' + company_name
+        message['Subject'] = f'Application for {position_name} at {company_name}'
 
         encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
 
@@ -63,8 +63,8 @@ def send_mail(company_name, position_name, app_date, company_email):
         print(e)
         print("Invalid email!")
         print('Manual follow up required')
-        print('Company: ' + company_name)
-        print('Position: ' + position_name)
+        print(f'Company: {company_name}')
+        print(f'Position: {position_name}')
         send_message = None
 
     return send_message

@@ -22,6 +22,8 @@ I also plan to implement a separate cover letter template flag that generates a 
 Will finish readme when program is 1.0.
 
 ## TODO list:
+ADD VARIABLE TO MAILER, accept user input. Dont want to talk ab agile like a jackass in every follow up email
+
 Text color is applied to the box, not the row. So when rows are shifted down in add_application(), edge rows become the wrong color
 
 Clean set_follow_up(), find out if creating services or passing services as args is best practice
@@ -31,3 +33,5 @@ Properly implement global credential object to build service instead of __init__
 Getting dates from spreadsheets doesn't get the year. The spreadsheet displays
 month/date, but stores month/date/year when accessed in browser. However api
 seems to only have access to month/date
+
+Multithread (maybe) to autoscan -m while adding a new application? Then alter cli flags (no flag acts like -n & -m at the same time, a flag to skip scan for follow ups, another to skip adding app)
