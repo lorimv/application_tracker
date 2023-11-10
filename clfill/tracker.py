@@ -98,7 +98,6 @@ def email_scheduler():
             if ready_for_followup(row):  # if row is ready...
                 send_mail(row[0], row[1], row[2], row[6])
                 set_followed_up(index, service)
-            print()
 
 
 def ready_for_followup(row):
@@ -121,9 +120,12 @@ def ready_for_followup(row):
            and app_date <= one_week_ago):  # bout a week ago
             print("app_date: " + app_date.strftime("%m/%d/%Y"))  # verbose?
             print("one_week_ago: " + one_week_ago.strftime("%m/%d/%Y"))
+            print()
             return True
-        print('Not ready for follow up')
-        print('Job: ' + row[0])
+        elif row[3] == 'No' and row[4] == 'Yes':
+            print('Not ready for follow up')
+            print('Job: ' + row[0])
+            print()
         return False
     except ValueError as e:
         print('Invalid application date found: ')
@@ -132,14 +134,16 @@ def ready_for_followup(row):
         print(e)
         return False
     except IndexError as e:
-        if len(row) == 6:
+        if len(row) == 6 and row[3] == 'No' and row[4] == 'Yes':
             print('Email Missing!')
             print('Manual follow-up required:')
             print('Company: ' + row[0])
             print('Job Title: ' + row[1])
-        else:
+            print()
+        elif len(row) != 6:
             print('A required value does not exist')
             print(e)
+            print()
         return False
 
 

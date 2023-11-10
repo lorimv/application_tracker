@@ -24,8 +24,6 @@ Will finish readme when program is 1.0.
 ## TODO list:
 Text color is applied to the box, not the row. So when rows are shifted down in add_application(), edge rows become the wrong color
 
-Logs 'not ready for follow up' even for denied apps (very annoying)
-
 Clean set_follow_up(), find out if creating services or passing services as args is best practice
 
 Properly implement global credential object to build service instead of __init__.py
