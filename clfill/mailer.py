@@ -39,8 +39,11 @@ def send_mail(company_name, position_name, app_date, company_email):
         body_text = read_body()
 
         message = EmailMessage()
+        # for some reason that eludes me sent emails have no wrapping
+        # but recieved ones do
         message.set_content(body_text.format(company=company_name,
-                            position=position_name, date=app_date, name=MY_NAME))
+                            position=position_name, date=app_date,
+                            name=MY_NAME, skills=get_skills(position_name)))
 
         message['To'] = company_email
         # message['From'] = MY_EMAIL
@@ -54,14 +57,14 @@ def send_mail(company_name, position_name, app_date, company_email):
 
         send_message = service.users().messages().send(
                        userId='me', body=create_message).execute()
-        print("email sent!!!")
+        print('email sent!!!')
         # print("just kidding. debug !")
         # print(company_name)
         # print(company_email)
         # print(app_date)
     except HttpError as e:
         print(e)
-        print("Invalid email!")
+        print('Invalid email!')
         print('Manual follow up required')
         print(f'Company: {company_name}')
         print(f'Position: {position_name}')
@@ -96,4 +99,32 @@ def create_body():
                    "My name:             {name}\n"
                    "Company:             {company}\n"
                    "Position:            {position}\n"
-                   "Application date:    {date}\n")
+                   "Application date:    {date}\n"
+                   "Skills:              {skills}\n")
+
+
+def get_skills(applied_position):
+    """a function to read a position, fill email with appropriate skills
+
+    """
+    skill_dict = {  # perhaps this should also be in a json but I think it's fine rn
+            'embedded': 'experience with low-level memory management and understanding of C makes',
+            'test': 'experiences with unit testing frameworks and agile development make',
+            'system': 'experience with a range of operating systems and scripting languages makes',
+            'systems': 'experience with a range of operating systems and scripting languages makes',
+            'sysadmin': 'experience with a range of operating systems and scripting languages makes',
+            'C++': 'history with Agile C++ development makes',
+            'engineer': 'experience working with a team in an Agile environment',
+            'developer': 'experience working with a team in an Agile environment'
+    }
+    skills = ''
+    for position, relevant_skill in skill_dict.items():
+        if position in applied_position:
+            skills += relevant_skill
+            break
+    if skills == '':
+        print('Fill out skills section:')
+        print(f'I believe my .... [write MAKE/S] ...me a good candidate for the {applied_position} position')
+        skills = input()
+
+    return skills

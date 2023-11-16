@@ -1,4 +1,4 @@
-# clfill v 0.9
+# clfill v 0.9.1
 
 Python command line application that uses the google docs API to fill in cover letter based on template on user's acct.
 
@@ -22,7 +22,7 @@ I also plan to implement a separate cover letter template flag that generates a 
 Will finish readme when program is 1.0.
 
 ## TODO list:
-ADD VARIABLE TO MAILER, accept user input. Dont want to talk ab agile like a jackass in every follow up email
+Add parent company variable?
 
 Text color is applied to the box, not the row. So when rows are shifted down in add_application(), edge rows become the wrong color
 
@@ -30,8 +30,6 @@ Clean set_follow_up(), find out if creating services or passing services as args
 
 Properly implement global credential object to build service instead of __init__.py
 
-Getting dates from spreadsheets doesn't get the year. The spreadsheet displays
-month/date, but stores month/date/year when accessed in browser. However api
-seems to only have access to month/date
+Getting dates from spreadsheets doesn't get the year. The spreadsheet displays month/date, but stores month/date/year when accessed in browser. However api seems to only have access to month/date
 
 Multithread (maybe) to autoscan -m while adding a new application? Then alter cli flags (no flag acts like -n & -m at the same time, a flag to skip scan for follow ups, another to skip adding app)
