@@ -40,7 +40,7 @@ def create_config():
 
 
 def get_config_value(section, key):
-    """Gets value associated with given section/key of config.ini file
+    """Gets value associated with given section/key of config.ini dict file
 
     Args:
         section (str): section of .ini file we're looking in

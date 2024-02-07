@@ -11,6 +11,7 @@ from .config_handler import get_config_value, set_config_value
 # (currently this must be done manually in the user's slides account)
 # TODO open tracker for user in browser?
 
+
 def add_application(company, job_title, location, employer_email):
     """Adds user inputs to the tracker
 
@@ -114,7 +115,7 @@ def ready_for_followup(row):
     try:
         temp = datetime.strptime(row[2], '%m/%d')
         one_week_ago = datetime.today() - timedelta(days=7)
-        app_date = datetime(2023, temp.month, temp.day)  # awful fix for api not getting year
+        app_date = datetime(2024, temp.month, temp.day)  # awful fix for api not getting year
         if (row and row[3] == 'No' and row[4] == 'Yes'
            and row[6] != ''  # there is an email listed
            and app_date <= one_week_ago):  # bout a week ago

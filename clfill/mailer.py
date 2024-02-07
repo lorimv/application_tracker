@@ -41,6 +41,8 @@ def send_mail(company_name, position_name, app_date, company_email):
         message = EmailMessage()
         # for some reason that eludes me sent emails have no wrapping
         # but recieved ones do
+
+        # anyway, body.txt is written with fstring formatting
         message.set_content(body_text.format(company=company_name,
                             position=position_name, date=app_date,
                             name=MY_NAME, skills=get_skills(position_name)))
@@ -110,12 +112,12 @@ def get_skills(applied_position):
     skill_dict = {  # perhaps this should also be in a json but I think it's fine rn
             'embedded': 'experience with low-level memory management and understanding of C makes',
             'test': 'experiences with unit testing frameworks and agile development make',
-            'system': 'experience with a range of operating systems and scripting languages makes',
-            'systems': 'experience with a range of operating systems and scripting languages makes',
-            'sysadmin': 'experience with a range of operating systems and scripting languages makes',
+            'system': 'experience with a diverse range of operating systems and scripting languages makes',
+            'systems': 'experience with a diverse range of operating systems and scripting languages makes',
+            'sysadmin': 'experience with a diverse range of operating systems and scripting languages makes',
             'C++': 'history with Agile C++ development makes',
-            'engineer': 'experience working with a team in an Agile environment',
-            'developer': 'experience working with a team in an Agile environment'
+            'engineer': 'experience working with a diverse team in an Agile environment',
+            'developer': 'experience working with a diverse team in an Agile environment'
     }
     skills = ''
     for position, relevant_skill in skill_dict.items():

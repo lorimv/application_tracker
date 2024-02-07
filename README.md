@@ -24,12 +24,15 @@ Will finish readme when program is 1.0.
 ## TODO list:
 Add parent company variable?
 
-Text color is applied to the box, not the row. So when rows are shifted down in add_application(), edge rows become the wrong color
+Text color is applied to the box, not the row. So when rows are shifted down in add\_application(), edge rows become the wrong color
 
-Clean set_follow_up(), find out if creating services or passing services as args is best practice
+Clean set\_follow\_up(), find out if creating services or passing services as args is best practice
 
-Properly implement global credential object to build service instead of __init__.py
+Properly implement global credential object to build service instead of \_\_init\_\_.py
 
 Getting dates from spreadsheets doesn't get the year. The spreadsheet displays month/date, but stores month/date/year when accessed in browser. However api seems to only have access to month/date
+**UPDATE**: the spreadsheet in browser does not store year, it just autofills current year (%Y) after month/day
 
 Multithread (maybe) to autoscan -m while adding a new application? Then alter cli flags (no flag acts like -n & -m at the same time, a flag to skip scan for follow ups, another to skip adding app)
+
+Sanitize inputs? will a ' or " break the program?

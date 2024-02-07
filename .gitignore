@@ -12,6 +12,9 @@ dist/
 build/
 *.egg-info/
 
+# Ignore ctags
+.tags
+
 # Ignore local development settings and pyc files
 *.pyc
 *.pyo
