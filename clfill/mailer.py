@@ -1,4 +1,4 @@
-"""responsible for sending emails
+"""Responsible for sending emails that are ready to be followed up on
 """
 import base64
 from email.message import EmailMessage
@@ -9,9 +9,6 @@ from googleapiclient.errors import HttpError
 
 from . import credentials
 from .config_handler import get_config_value
-
-# this is the module that will auto-send follow up emails when -m is called
-# im thinking it will take arguments from tracker module that returns company name & email & job title
 
 
 def send_mail(company_name, position_name, app_date, company_email):
@@ -27,7 +24,7 @@ def send_mail(company_name, position_name, app_date, company_email):
         ???: draft of email ig? need to read documentation again
 
     """
-    MY_NAME = get_config_value('Mailer', 'myName')  # TODO get name (query() in config_handler?)
+    MY_NAME = get_config_value('Mailer', 'myName')
     # MY_EMAIL = get_config_value('Mailer', 'myEmail')
 
     # TODO maybe ask for confirmation before sending an email jic

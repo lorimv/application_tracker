@@ -11,7 +11,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets',
           'https://www.googleapis.com/auth/gmail.send']
 
 
-def get_credentials():
+def get_credentials() -> credentials.Credentials:
     """Gets credentials from cached files, or creates credentials from
     api key and then caches them in /config
 
@@ -28,7 +28,7 @@ def get_credentials():
     return user_credentials
 
 
-def get_path():
+def get_path() -> str:
     """Gets the path to credentials from environmental variable
 
     Returns:
@@ -41,7 +41,7 @@ def get_path():
     return credentials_path
 
 
-def authenticate(credentials_path):
+def authenticate(credentials_path) -> credentials.Credentials:
     """Locates credentials file, then returns Credentials obj
 
     Args:

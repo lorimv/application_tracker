@@ -1,6 +1,6 @@
 """module housing all spreadsheet-related functions
 """
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from . import credentials
@@ -21,7 +21,6 @@ def add_application(company, job_title, location, employer_email):
         location (str): location of position
         employer_email (str): address to send follow-up email to
     """
-    # TODO add defaults? to help prevent oob errors later
     service = build('sheets', 'v4', credentials=credentials)
     tracker_id = get_config_value('Tracker', 'trackerId')
     if tracker_id == '':  # ...there is no trackerId in ini file...
@@ -39,7 +38,7 @@ def add_application(company, job_title, location, employer_email):
     tracker_vals = result.get('values', [])
     if tracker_vals:
         tracker_vals.insert(0, [""] * 8)
-    paste = {'values': tracker_vals}
+    paste = {'values': tracker_vals}  # mypy doesnt like this?
 
     # clears all values, pastes them one below top row
     service.spreadsheets().values().clear(
@@ -47,6 +46,7 @@ def add_application(company, job_title, location, employer_email):
     result = service.spreadsheets().values().append(
             spreadsheetId=tracker_id, range='A2:H',
             valueInputOption='USER_ENTERED', body=paste).execute()
+    # mypy knows body is type ValueRange, but doesn't know what ValueRange is
 
     # inserts the new application in the top row
     new_application = {
@@ -62,7 +62,7 @@ def add_application(company, job_title, location, employer_email):
                     ""
                   ]
                 ]
-              }
+                }  # type: ignore
     service.spreadsheets().values().update(
             spreadsheetId=tracker_id, range='A2:H2',
             valueInputOption='USER_ENTERED', body=new_application).execute()
@@ -95,7 +95,7 @@ def email_scheduler():
 
     values = all_applications.get('values', [])
     if values:
-        for index, row in enumerate(values):  # loop thru all applications (rows) in sheet
+        for index, row in enumerate(values):  # loop thru all applications
             if ready_for_followup(row):  # if row is ready...
                 send_mail(row[0], row[1], row[2], row[6])
                 set_followed_up(index, service)
@@ -115,7 +115,7 @@ def ready_for_followup(row):
     try:
         temp = datetime.strptime(row[2], '%m/%d')
         one_week_ago = datetime.today() - timedelta(days=7)
-        app_date = datetime(2024, temp.month, temp.day)  # awful fix for api not getting year
+        app_date = (datetime.now.year, temp.month, temp.day)
         if (row and row[3] == 'No' and row[4] == 'Yes'
            and row[6] != ''  # there is an email listed
            and app_date <= one_week_ago):  # bout a week ago
