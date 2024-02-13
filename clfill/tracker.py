@@ -115,7 +115,7 @@ def ready_for_followup(row):
     try:
         temp = datetime.strptime(row[2], '%m/%d')
         one_week_ago = datetime.today() - timedelta(days=7)
-        app_date = (datetime.now.year, temp.month, temp.day)
+        app_date = datetime(datetime.now().year, temp.month, temp.day)
         if (row and row[3] == 'No' and row[4] == 'Yes'
            and row[6] != ''  # there is an email listed
            and app_date <= one_week_ago):  # bout a week ago
