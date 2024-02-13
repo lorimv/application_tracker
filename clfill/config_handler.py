@@ -30,7 +30,7 @@ def create_config():
 
     config.add_section('Mailer')
     print('Enter your email: ')
-    config.set('Mailer', 'myEmail', input())  # Should we ask here? Additionally,
+    config.set('Mailer', 'myEmail', input())  # Should we ask here? And,
     print('Enter your name: ')
     config.set('Mailer', 'myName', input())   # should setup be done with cli?
     print('Settings can be changed in clfill/config/config.ini')
@@ -56,7 +56,7 @@ def get_config_value(section, key):
     config = configparser.ConfigParser()
     config.read('config/config.ini')
 
-    value = config[section][key]  # TODO may throw an error instantly, CHECK DOCS
+    value = config[section][key]  # may throw an error instantly, CHECK DOCS
 
     if not value:  # if value is (somehow) not in file yet, add it now
         config.set(section, key, '')
