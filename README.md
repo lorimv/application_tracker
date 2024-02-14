@@ -1,6 +1,6 @@
 # clfill v 0.9.1
 
-Python command line application that uses the google docs API to fill in cover letter based on template on user's acct.
+Python command line application that uses the google docs API to fill in a tracker spreadsheet, then send emails to companies following up on apps
 
 ## When run:
 -n flag:
@@ -17,7 +17,7 @@ Sets followed up to Yes after email is sent
 
 (I know this is like driving a nail with a sledgehammer but I wanted to learn api and cli's/python packages)
 
-I also plan to implement a separate cover letter template flag that generates a starter cl when called with -n
+I may implement a separate cover letter template flag that generates a starter cl when called with -n
 
 Will finish readme when program is 1.0.
 
@@ -36,3 +36,5 @@ Getting dates from spreadsheets doesn't get the year. The spreadsheet displays m
 Multithread (maybe) to autoscan -m while adding a new application? Then alter cli flags (no flag acts like -n & -m at the same time, a flag to skip scan for follow ups, another to skip adding app)
 
 Sanitize inputs? will a ' or " break the program?
+
+Use the actual keyring libraries to save user_credentials
