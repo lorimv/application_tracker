@@ -37,4 +37,4 @@ Multithread (maybe) to autoscan -m while adding a new application? Then alter cl
 
 Sanitize inputs? will a ' or " break the program?
 
-Use the actual keyring libraries to save user_credentials
+Use the actual keyring libraries to save user\_credentials
